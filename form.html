@@ -36,13 +36,11 @@
     button:hover {
       background-color: #e4d8bc;
     }
-    h2 {
-      font-size: 35px;
-      margin-bottom: 10px;
-    }
+    h2 { font-size: 35px; margin-bottom: 10px; }
   </style>
 </head>
 <body>
+
 <h2>Chào mừng bạn đã đến với SLTĐ 2025's Wrapped!</h2>
 <p>Hãy điền câu trả lời phù hợp nhất với bạn nhé.</p>
 
@@ -72,19 +70,19 @@
 </form>
 
 <script>
-document.getElementById("wrappedForm").addEventListener("submit", async function(event) {
-  event.preventDefault(); // Ngăn submit mặc định
+document.getElementById("wrappedForm").addEventListener("submit", async function(e) {
+    e.preventDefault(); // chặn submit mặc định
 
-  const formData = new FormData(this);
+    const form = e.target;
+    const data = new FormData(form);
 
-  // Gửi tới Webhook.site
-  await fetch("https://webhook.site/cdfbdc61-5422-4c0f-b359-303ba939633e", {
-    method: "POST",
-    body: formData
-  });
+    await fetch("https://webhook.site/cdfbdc61-5422-4c0f-b359-303ba939633e", {
+        method: "POST",
+        body: data
+    });
 
-  // Chuyển sang trang cảm ơn
-  window.location.href = "thankyou.html";
+    // chỉ redirect sau khi gửi xong
+    window.location.href = "thankyou.html";
 });
 </script>
 
