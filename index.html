@@ -1,143 +1,110 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Access</title>
+<meta charset="UTF-8">
+<title>Access</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: radial-gradient(circle at top, #5a0f1f, #3b0813 70%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: "Playfair Display", serif;
-      color: #f5e7c6;
-      overflow: hidden;
-    }
+<style>
+:root{
+  --bg:#6a0f1c;
+  --box:#4b000f;
+  --gold:#f5e7c6;
+}
 
-    /* Sparkles */
-    body::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(#f5e7c655 1px, transparent 1px),
-        radial-gradient(#f5e7c633 1px, transparent 1px);
-      background-size: 120px 120px, 180px 180px;
-      animation: sparkle 18s linear infinite;
-      pointer-events: none;
-    }
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  color:var(--gold);
+  font-family:"Inter",sans-serif;
+  overflow:hidden;
+}
 
-    @keyframes sparkle {
-      from { background-position: 0 0, 0 0; }
-      to { background-position: 600px 1200px, -800px 600px; }
-    }
+.container{
+  width:92%;
+  max-width:480px;
+  background:var(--box);
+  padding:48px 32px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
 
-    .box {
-      position: relative;
-      background: rgba(30, 5, 10, 0.85);
-      border: 1px solid #d8c48f55;
-      box-shadow: 0 0 60px rgba(245,231,198,0.12);
-      border-radius: 22px;
-      padding: 48px 36px 44px;
-      width: min(92vw, 420px);
-      text-align: center;
-      animation: fadeUp 1.1s ease;
-    }
+h2{
+  font-family:"Playfair Display",serif;
+  font-size:34px;
+}
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+input{
+  width:100%;
+  padding:16px;
+  font-size:18px;
+  border-radius:12px;
+  border:none;
+  margin-top:20px;
+}
 
-    h3 {
-      font-family: "Cinzel", serif;
-      font-size: 30px;
-      margin-bottom: 10px;
-      letter-spacing: 0.5px;
-    }
+button{
+  margin-top:26px;
+  width:100%;
+  padding:16px;
+  font-size:20px;
+  font-family:"Playfair Display",serif;
+  background:var(--gold);
+  color:var(--box);
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+}
 
-    .hint {
-      font-size: 15px;
-      opacity: 0.85;
-      margin-bottom: 22px;
-    }
+#error{color:#ffb3b3;margin-top:14px;}
 
-    input {
-      width: 100%;
-      padding: 16px 18px;
-      font-size: 18px;
-      border-radius: 14px;
-      border: 1px solid #d8c48f88;
-      background: #fff;
-      outline: none;
-      text-align: center;
-      font-family: "Playfair Display", serif;
-    }
-
-    button {
-      margin-top: 22px;
-      width: 100%;
-      padding: 16px;
-      font-size: 20px;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      font-family: "Cinzel", serif;
-      background: linear-gradient(135deg, #f5e7c6, #d8c48f);
-      color: #3b0813;
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 30px rgba(245,231,198,0.35);
-    }
-
-    .error {
-      margin-top: 16px;
-      font-size: 15px;
-      color: #ffb3b3;
-      min-height: 20px;
-    }
-
-    @media (max-width: 480px) {
-      h3 { font-size: 26px; }
-      input { font-size: 17px; }
-      button { font-size: 18px; }
-    }
-  </style>
+.sparkle{
+  position:fixed;
+  width:6px;height:6px;
+  background:rgba(255,255,255,.7);
+  border-radius:50%;
+  animation:float 6s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(100vh);opacity:0}
+  to{transform:translateY(-10vh);opacity:1}
+}
+</style>
 </head>
 
 <body>
-  <div class="box">
-    <h3>NHẬP MẬT KHẨU</h3>
-    <div class="hint">Hint: 4 chữ số</div>
+<div class="container">
+  <h2>Mật mã của năm</h2>
+  <p><em>Hint: 4 chữ số</em></p>
 
-    <input type="text" id="code" placeholder="....">
+  <input id="code" placeholder="....">
+  <button onclick="check()">SUBMIT</button>
+  <div id="error"></div>
+</div>
 
-    <button onclick="checkCode()">SUBMIT</button>
+<script>
+function check(){
+  const v=document.getElementById("code").value.trim().toLowerCase();
+  if(v==="8992"){
+    window.location.href="quiz.html";
+  }else{
+    document.getElementById("error").innerText="Mật mã chưa đúng!";
+  }
+}
 
-    <div class="error" id="error"></div>
-  </div>
-
-  <script>
-    function checkCode() {
-      const input = document.getElementById("code").value.trim();
-      if (input === "8992") {
-        window.location.href = "form.html"; 
-        // đổi thành tên file trang 2 của bạn
-      } else {
-        document.getElementById("error").innerText =
-          "Mật mã chưa đúng. Vui lòng thử lại.";
-      }
-    }
-  </script>
+for(let i=0;i<18;i++){
+  const s=document.createElement("div");
+  s.className="sparkle";
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDelay=Math.random()*5+"s";
+  document.body.appendChild(s);
+}
+</script>
 </body>
 </html>
